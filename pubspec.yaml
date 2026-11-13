@@ -1,0 +1,37 @@
+name: pixcompact
+description: PixCompact - offline rasm, PDF va video vositalari.
+publish_to: 'none'
+
+# Versiya qat'iy shu ko'rinishda bo'lishi kerak
+version: 1.17.858+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:      # Tizim tiliga moslash (Material matnlari)
+    sdk: flutter
+
+  image_picker: ^1.0.7        # Galereyadan rasm/video tanlash
+  image: ^4.1.7               # Rasm qayta ishlash (resize, sharpen, rotate...)
+  archive: ^3.6.1             # ZIP yaratish
+  pdf: ^3.10.8                # PDF yaratish
+  path_provider: ^2.1.2       # Fayl saqlash joylari
+  share_plus: ^7.2.2          # Natijani ulashish
+  video_compress: ^3.1.3      # Offline video siqish / qirqish
+  url_launcher: ^6.2.5        # Telegram havolasini ochish
+  flutter_image_compress: ^2.3.0  # WebP formatida kodlash uchun
+  file_picker: ^8.1.2         # Telefon xotirasidan audio fayl tanlash
+  ffmpeg_kit_flutter_new_audio: ^2.0.0  # Offline audio konvertatsiya (MP3/AAC/WAV/FLAC)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/icon.png
