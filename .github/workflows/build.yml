@@ -24,6 +24,40 @@ jobs:
           sed -i -E 's/minSdk(Version)? *=? *flutter\.minSdkVersion/minSdk = 24/' android/app/build.gradle.kts 2>/dev/null || true
           sed -i -E 's/minSdkVersion +flutter\.minSdkVersion/minSdkVersion 24/' android/app/build.gradle 2>/dev/null || true
           grep -n "minSdk" android/app/build.gradle* || true
+      # Eski plaginlar (masalan file_picker) android-33 ga qarab kompilyatsiya qilinadi,
+      # yangi AndroidX esa 36 talab qiladi. Barcha plagin modullarni 36 ga ko'taramiz.
+      - name: Plaginlar uchun compileSdk 36
+        run: |
+          if [ -f android/build.gradle.kts ]; then
+            f=android/build.gradle.kts
+            cat > /tmp/fix.gradle <<'EOF'
+          subprojects {
+              afterEvaluate {
+                  if (project.name != "app") {
+                      extensions.findByName("android")?.withGroovyBuilder {
+                          "compileSdkVersion"(36)
+                      }
+                  }
+              }
+          }
+
+          EOF
+          else
+            f=android/build.gradle
+            cat > /tmp/fix.gradle <<'EOF'
+          subprojects {
+              afterEvaluate { p ->
+                  if (p.name != 'app' && p.hasProperty('android')) {
+                      p.android.compileSdkVersion 36
+                  }
+              }
+          }
+
+          EOF
+          fi
+          cat /tmp/fix.gradle "$f" > /tmp/merged.gradle
+          mv /tmp/merged.gradle "$f"
+          head -20 "$f"
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
