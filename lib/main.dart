@@ -1807,6 +1807,7 @@ class _VideoScreenState extends State<VideoScreen> {
     try {
       final bytes = await VideoCompress.getByteThumbnail(_path!,
           quality: 100, position: (_range.start * 1000).round());
+      if (bytes == null) throw Exception('frame_fail');
       final p = '${await outDir()}/frame_${stamp()}.jpg';
       await File(p).writeAsBytes(bytes);
       if (mounted) await saveToDownloads(context, p);
@@ -1935,7 +1936,7 @@ class _VideoScreenState extends State<VideoScreen> {
                       value: VideoQuality.MediumQuality,
                       label: Text(tr(context, 'level_medium'))),
                   ButtonSegment(
-                      value: VideoQuality.HighQuality,
+                      value: VideoQuality.HighestQuality,
                       label: Text(tr(context, 'level_light'))),
                 ],
                 selected: {_quality},
